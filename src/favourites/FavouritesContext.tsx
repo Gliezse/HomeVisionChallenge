@@ -6,12 +6,12 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from "react";
+} from 'react';
 import {
   FAVOURITE_HOUSE_IDS_STORAGE_KEY,
   parseFavouriteHouseIds,
   serializeFavouriteHouseIds,
-} from "./favouriteHouseIdsStorage";
+} from './favouriteHouseIdsStorage';
 
 type FavouritesContextValue = {
   isFavourite: (id: number) => boolean;
@@ -22,7 +22,7 @@ const FavouritesContext = createContext<FavouritesContextValue | null>(null);
 
 export function FavouritesProvider({ children }: { children: ReactNode }) {
   const [ids, setIds] = useState<Set<number>>(() => {
-    if (typeof window === "undefined") return new Set();
+    if (typeof window === 'undefined') return new Set();
     return parseFavouriteHouseIds(
       localStorage.getItem(FAVOURITE_HOUSE_IDS_STORAGE_KEY),
     );
@@ -38,8 +38,8 @@ export function FavouritesProvider({ children }: { children: ReactNode }) {
       }
       setIds(parseFavouriteHouseIds(e.newValue));
     };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, []);
 
   const toggleFavourite = useCallback((id: number) => {
@@ -74,7 +74,7 @@ export function FavouritesProvider({ children }: { children: ReactNode }) {
 export function useFavourites(): FavouritesContextValue {
   const ctx = useContext(FavouritesContext);
   if (!ctx) {
-    throw new Error("useFavourites must be used within FavouritesProvider");
+    throw new Error('useFavourites must be used within FavouritesProvider');
   }
   return ctx;
 }

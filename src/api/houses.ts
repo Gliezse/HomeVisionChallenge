@@ -1,9 +1,9 @@
-import { apiClient, HOUSES_API_URL, toAppApiError } from "./client";
-import type { HousesApiResponse, HousesPageResult } from "../types/house";
+import { apiClient, HOUSES_API_URL, toAppApiError } from './client';
+import type { HousesApiResponse, HousesPageResult } from '../types/house';
 
 export async function fetchHousesPage(
   page: number,
-  perPage: number
+  perPage: number,
 ): Promise<HousesPageResult> {
   try {
     const { data } = await apiClient.get<HousesApiResponse>(HOUSES_API_URL, {

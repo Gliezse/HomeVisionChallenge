@@ -1,7 +1,7 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
-import { fetchHousesPage } from "../api/houses";
-import type { House } from "../types/house";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { fetchHousesPage } from '../api/houses';
+import type { House } from '../types/house';
 
 /** Page size 12: e.g. 4 rows at 3 cols (lg), 6 rows at 2 cols (md), 12 rows at 1 col (mobile). */
 const DEFAULT_PER_PAGE = 12;
@@ -24,10 +24,10 @@ export interface UseInfiniteHousesResult {
 }
 
 export function useInfiniteHouses(
-  perPage: number = DEFAULT_PER_PAGE
+  perPage: number = DEFAULT_PER_PAGE,
 ): UseInfiniteHousesResult {
   const query = useInfiniteQuery({
-    queryKey: ["houses", perPage],
+    queryKey: ['houses', perPage],
     initialPageParam: 1,
     queryFn: ({ pageParam }) => fetchHousesPage(pageParam, perPage),
     getNextPageParam: (lastPage) =>
@@ -38,7 +38,7 @@ export function useInfiniteHouses(
 
   const houses = useMemo(
     () => query.data?.pages.flatMap((p) => p.houses) ?? [],
-    [query.data?.pages]
+    [query.data?.pages],
   );
 
   return {

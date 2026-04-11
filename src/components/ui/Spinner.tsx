@@ -5,8 +5,8 @@ type SpinnerProps = {
 };
 
 export function Spinner({
-  className = "h-8 w-8",
-  label = "Loading",
+  className = 'h-8 w-8',
+  label = 'Loading',
 }: SpinnerProps) {
   return (
     <span

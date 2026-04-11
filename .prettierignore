@@ -1,0 +1,15 @@
+dist
+dist-ssr
+node_modules
+coverage
+*.min.js
+package-lock.json
+
+# Non-code (also narrows manual `prettier` runs; npm scripts only target ts/tsx/js/css/json)
+*.md
+*.yml
+*.yaml
+Dockerfile
+Makefile
+*.html
+nginx*.conf

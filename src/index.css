@@ -1,8 +1,8 @@
-@import "tailwindcss";
-@import "@fontsource-variable/inter/index.css";
+@import 'tailwindcss';
+@import '@fontsource-variable/inter/index.css';
 
 @theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   /** Primary text (zinc-950) — used via `body` and `text-page-ink` where inheritance is unreliable */
   --color-page-ink: #18181b;
   --bg-purple-light: #f8fafc;

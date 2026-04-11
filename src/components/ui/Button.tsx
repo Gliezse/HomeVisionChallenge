@@ -1,6 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type Variant = "primary" | "secondary";
+type Variant = 'primary' | 'secondary';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -9,20 +9,20 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50";
+  'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline-slate-900",
+    'bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline-slate-900',
   secondary:
-    "bg-white text-page-ink shadow-sm ring-1 ring-slate-200 hover:bg-slate-50 focus-visible:outline-slate-400",
+    'bg-white text-page-ink shadow-sm ring-1 ring-slate-200 hover:bg-slate-50 focus-visible:outline-slate-400',
 };
 
 export function Button({
-  variant = "primary",
+  variant = 'primary',
   loading = false,
   disabled,
-  className = "",
+  className = '',
   children,
   ...rest
 }: ButtonProps) {

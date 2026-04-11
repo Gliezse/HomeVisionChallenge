@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 type ErrorMessageProps = {
   title?: string;
@@ -8,10 +8,10 @@ type ErrorMessageProps = {
 };
 
 export function ErrorMessage({
-  title = "Something went wrong",
+  title = 'Something went wrong',
   message,
   children,
-  className = "",
+  className = '',
 }: ErrorMessageProps) {
   return (
     <div

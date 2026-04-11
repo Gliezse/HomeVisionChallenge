@@ -1,6 +1,6 @@
-import { HouseTable } from "../components/house/HouseTable";
-import { Container } from "../components/layout/Container";
-import { SiteHeader } from "../components/layout/SiteHeader";
+import { HouseTable } from '../components/house/HouseTable';
+import { Container } from '../components/layout/Container';
+import { SiteHeader } from '../components/layout/SiteHeader';
 
 export function Home() {
   return (

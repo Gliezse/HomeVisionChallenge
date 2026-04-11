@@ -1,4 +1,4 @@
-import { useWindowVirtualizer, measureElement } from "@tanstack/react-virtual";
+import { useWindowVirtualizer, measureElement } from '@tanstack/react-virtual';
 import {
   useCallback,
   useEffect,
@@ -7,14 +7,14 @@ import {
   useRef,
   useSyncExternalStore,
   useState,
-} from "react";
-import { useInfiniteHouses } from "../../hooks/useInfiniteHouses";
-import { Button } from "../ui/Button";
-import { ErrorMessage } from "../ui/ErrorMessage";
-import { HouseCard } from "./HouseCard";
+} from 'react';
+import { useInfiniteHouses } from '../../hooks/useInfiniteHouses';
+import { Button } from '../ui/Button';
+import { ErrorMessage } from '../ui/ErrorMessage';
+import { HouseCard } from './HouseCard';
 
-const MD_QUERY = "(min-width: 768px)";
-const LG_QUERY = "(min-width: 1024px)";
+const MD_QUERY = '(min-width: 768px)';
+const LG_QUERY = '(min-width: 1024px)';
 
 /** Guessed row height before ResizeObserver (square card + copy; varies by column count). */
 const ROW_ESTIMATE_1_COL = 580;
@@ -24,11 +24,11 @@ const ROW_ESTIMATE_3_COL = 400;
 function subscribeLayoutColumns(cb: () => void) {
   const mqMd = window.matchMedia(MD_QUERY);
   const mqLg = window.matchMedia(LG_QUERY);
-  mqMd.addEventListener("change", cb);
-  mqLg.addEventListener("change", cb);
+  mqMd.addEventListener('change', cb);
+  mqLg.addEventListener('change', cb);
   return () => {
-    mqMd.removeEventListener("change", cb);
-    mqLg.removeEventListener("change", cb);
+    mqMd.removeEventListener('change', cb);
+    mqLg.removeEventListener('change', cb);
   };
 }
 
@@ -53,7 +53,7 @@ function useItemsPerRow() {
 }
 
 const GRID_ROW_CLASS =
-  "grid grid-cols-1 gap-6 pb-6 md:grid-cols-2 md:gap-7 lg:grid-cols-3 lg:gap-8";
+  'grid grid-cols-1 gap-6 pb-6 md:grid-cols-2 md:gap-7 lg:grid-cols-3 lg:gap-8';
 
 function SkeletonCard() {
   return (
@@ -130,15 +130,15 @@ export function HouseTable() {
 
   useLayoutEffect(() => {
     measureScrollMargin();
-    const header = document.querySelector("[data-site-header]");
+    const header = document.querySelector('[data-site-header]');
     const ro = new ResizeObserver(() => {
       measureScrollMargin();
     });
     if (header) ro.observe(header);
-    window.addEventListener("resize", measureScrollMargin);
+    window.addEventListener('resize', measureScrollMargin);
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", measureScrollMargin);
+      window.removeEventListener('resize', measureScrollMargin);
     };
   }, [measureScrollMargin]);
 
@@ -162,7 +162,7 @@ export function HouseTable() {
         if (isFetchNextPageError) return;
         fetchNextPage();
       },
-      { root: null, rootMargin: "720px", threshold: 0 },
+      { root: null, rootMargin: '720px', threshold: 0 },
     );
 
     observer.observe(target);
@@ -183,7 +183,7 @@ export function HouseTable() {
         <ErrorMessage
           title="Failed to load houses"
           message={
-            error?.message ?? "The request failed after several retries."
+            error?.message ?? 'The request failed after several retries.'
           }
         >
           <Button type="button" variant="primary" onClick={() => refetch()}>

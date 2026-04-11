@@ -1,21 +1,21 @@
-import { memo, useId, useMemo, useState } from "react";
-import { useFavourites } from "../../favourites/FavouritesContext";
-import type { House } from "../../types/house";
-import { formatPriceUSD } from "../../utils/format";
+import { memo, useId, useMemo, useState } from 'react';
+import { useFavourites } from '../../favourites/FavouritesContext';
+import type { House } from '../../types/house';
+import { formatPriceUSD } from '../../utils/format';
 
-const INQUIRY_EMAIL = "inquiry@homevision-fake-address.com";
-const INQUIRY_SUBJECT = "Inquiry about a house";
+const INQUIRY_EMAIL = 'inquiry@homevision-fake-address.com';
+const INQUIRY_SUBJECT = 'Inquiry about a house';
 
 function buildInquiryBody(house: House): string {
   return [
     "Hi! I'm interested in talking about this property I found in your website",
-    "",
+    '',
     `Address: ${house.address}`,
     `Homeowner: ${house.homeowner}`,
     `Price: ${formatPriceUSD(house.price)}`,
     `Property ID: ${house.id}`,
     `Photo URL: ${house.photoURL}`,
-  ].join("\n");
+  ].join('\n');
 }
 
 function inquiryMailtoHref(house: House): string {
@@ -47,7 +47,7 @@ function MailIcon({ className }: { className?: string }) {
 
 /** One path for both states so active/inactive share the same optical center. */
 const HEART_PATH =
-  "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z";
+  'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z';
 
 function HeartIcon({ filled }: { filled: boolean }) {
   return (
@@ -59,8 +59,8 @@ function HeartIcon({ filled }: { filled: boolean }) {
     >
       <path
         d={HEART_PATH}
-        fill={filled ? "currentColor" : "none"}
-        stroke={filled ? "none" : "currentColor"}
+        fill={filled ? 'currentColor' : 'none'}
+        stroke={filled ? 'none' : 'currentColor'}
         strokeWidth={filled ? undefined : 1.75}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -70,15 +70,15 @@ function HeartIcon({ filled }: { filled: boolean }) {
 }
 
 const ACTION_CHIP =
-  "flex size-10 shrink-0 items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-slate-200/80";
+  'flex size-10 shrink-0 items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-slate-200/80';
 
 const ACTION_PEEK =
-  "transition-[opacity,color] duration-200 ease-out focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-purple)] md:pointer-events-none md:opacity-0 md:group-focus-within:pointer-events-auto md:group-focus-within:opacity-100 md:group-hover:pointer-events-auto md:group-hover:opacity-100";
+  'transition-[opacity,color] duration-200 ease-out focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-purple)] md:pointer-events-none md:opacity-0 md:group-focus-within:pointer-events-auto md:group-focus-within:opacity-100 md:group-hover:pointer-events-auto md:group-hover:opacity-100';
 
 const PLACEHOLDER_IMAGE =
-  "data:image/svg+xml," +
+  'data:image/svg+xml,' +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480"><rect fill="#e2e8f0" width="640" height="480"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#64748b" font-family="system-ui,sans-serif" font-size="18">No photo</text></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480"><rect fill="#e2e8f0" width="640" height="480"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#64748b" font-family="system-ui,sans-serif" font-size="18">No photo</text></svg>`,
   );
 
 export type HouseCardProps = {
@@ -86,7 +86,7 @@ export type HouseCardProps = {
   className?: string;
 };
 
-function HouseCardInner({ house, className = "" }: HouseCardProps) {
+function HouseCardInner({ house, className = '' }: HouseCardProps) {
   const [src, setSrc] = useState(house.photoURL);
   const { isFavourite, toggleFavourite } = useFavourites();
   const isFav = isFavourite(house.id);
@@ -117,7 +117,7 @@ function HouseCardInner({ house, className = "" }: HouseCardProps) {
         Opens your email app with a draft message about this listing.
       </span>
       <span id={favActionId} className="sr-only">
-        {isFav ? "Remove from favourites." : "Add to favourites."}
+        {isFav ? 'Remove from favourites.' : 'Add to favourites.'}
       </span>
       <div className="relative w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 aspect-square">
         <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
@@ -127,7 +127,7 @@ function HouseCardInner({ house, className = "" }: HouseCardProps) {
             aria-labelledby={`${favActionId} ${listingSummaryId}`}
             className={`${ACTION_CHIP} ${
               isFav
-                ? "text-[var(--color-purple)] opacity-100 cursor-pointer"
+                ? 'text-[var(--color-purple)] opacity-100 cursor-pointer'
                 : `text-gray-500 hover:text-[var(--color-purple)] cursor-pointer ${ACTION_PEEK}`
             }`}
             onClick={() => toggleFavourite(house.id)}
