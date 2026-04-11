@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    image: homevision-interview:local
+    ports:
+      - "${PORT:-8080}:80"
+    restart: unless-stopped

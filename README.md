@@ -16,7 +16,9 @@ npm install
 ## Run locally
 
 ```bash
-npm run dev
+make dev          # npm install, then Vite dev server
+# or
+npm run dev       # after npm install from Setup
 ```
 
 Open the URL printed in the terminal (typically `http://localhost:5173`).
@@ -27,6 +29,25 @@ Open the URL printed in the terminal (typically `http://localhost:5173`).
 npm run build
 npm run preview   # optional: serve production build locally
 ```
+
+## Docker (production build locally)
+
+Requires [Docker](https://docs.docker.com/get-docker/) with Compose (Docker Desktop includes it).
+
+| Command | What it does |
+|--------|----------------|
+| `make up` | Build the image and start the app in the background (`docker compose up -d --build`). |
+| `make down` | Stop and remove containers and the default network (`docker compose down`). |
+
+**Run the dockerized build in your browser**
+
+1. From the project root: `make up`
+2. Wait for the image build and container start to finish (first run takes longer).
+3. Open **http://localhost:8080** — nginx serves the production `dist/` output.
+
+To use another host port: `PORT=3000 make up` (maps host `3000` → container `80`).
+
+Equivalent without Make: `docker compose up -d --build` and `docker compose down`.
 
 ## Configuration
 
