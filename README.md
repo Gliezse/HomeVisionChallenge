@@ -38,6 +38,10 @@ npm run preview   # optional: serve production build locally
   VITE_API_BASE=https://staging.homevision.co/api_project/houses npm run dev
   ```
 
+## Future enhancements
+
+See [FUTURE_ENHANCEMENTS.md](FUTURE_ENHANCEMENTS.md) for planned directions (favourites page, filtering/sorting, house details) and how today’s **API limits** affect them.
+
 ## Stack
 
 - Vite, React 19, TypeScript
