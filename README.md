@@ -1,6 +1,6 @@
 # HomeVision — Houses (interview app)
 
-React + TypeScript app that lists houses from the HomeVision staging API with **infinite scroll**, **virtualized rows**, and **resilience** to flaky responses (automatic retries, then manual retry).
+React + TypeScript app that lists houses from the HomeVision staging API with **infinite scroll**, **virtualized rows**, and **resilience** when the API doesn’t respond (automatic retries, then manual retry).
 
 ## Prerequisites
 

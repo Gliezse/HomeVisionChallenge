@@ -41,8 +41,8 @@ export function SiteHeader() {
               : "mt-3 max-w-2xl text-sm leading-relaxed opacity-100"
           }`}
         >
-          Infinite scroll with virtualization. The staging API is flaky — we retry
-          automatically, then you can retry manually if needed.
+          Infinite scroll with virtualization. If the connection isn’t stable,
+          we retry automatically — you can try again anytime if needed.
         </p>
       </Container>
     </header>

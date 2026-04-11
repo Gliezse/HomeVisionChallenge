@@ -180,7 +180,7 @@ export function HouseTable() {
               <div className="w-full max-w-md">
                 <ErrorMessage
                   title="Failed to load more houses"
-                  message="The flaky API did not respond. You can try again manually."
+                  message="We couldn’t load more homes. Please try again."
                 >
                   <Button
                     type="button"
