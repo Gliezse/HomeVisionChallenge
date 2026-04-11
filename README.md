@@ -75,3 +75,12 @@ See [FUTURE_ENHANCEMENTS.md](FUTURE_ENHANCEMENTS.md) for planned directions (fav
 ```bash
 npm run lint
 ```
+
+## Format
+
+[Prettier](https://prettier.io/) is configured for `*.ts`, `*.tsx`, `*.js`, `*.css`, and `*.json` (see `package.json` scripts and `.prettierrc`).
+
+```bash
+npm run format          # write formatted output in place
+npm run format:check    # verify formatting (CI-friendly, exits non-zero if diffs)
+```
