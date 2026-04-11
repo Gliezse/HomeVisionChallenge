@@ -3,6 +3,12 @@
 
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  /** Primary text (zinc-950) — used via `body` and `text-page-ink` where inheritance is unreliable */
+  --color-page-ink: #18181b;
+  --bg-purple-light: #f8fafc;
+  --color-purple: #4f46e5;
+  --bg-purple-dark: #eef2ff;
+  --base--light-gray: #e4e4e7;
 }
 
 body {
@@ -10,5 +16,6 @@ body {
   min-height: 100vh;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  background-color: var(--color-gray-50);
+  background-color: var(--bg-white);
+  color: var(--color-page-ink);
 }

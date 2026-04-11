@@ -15,7 +15,7 @@ const variants: Record<Variant, string> = {
   primary:
     "bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline-slate-900",
   secondary:
-    "bg-white text-slate-800 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50 focus-visible:outline-slate-400",
+    "bg-white text-page-ink shadow-sm ring-1 ring-slate-200 hover:bg-slate-50 focus-visible:outline-slate-400",
 };
 
 export function Button({
@@ -36,7 +36,7 @@ export function Button({
     >
       {loading ? (
         <span
-          className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+          className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent cursor-pointer"
           aria-hidden
         />
       ) : null}
