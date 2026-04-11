@@ -3,8 +3,13 @@ import { useFavourites } from '../../favourites/FavouritesContext';
 import type { House } from '../../types/house';
 import { formatPriceUSD } from '../../utils/format';
 
-const INQUIRY_EMAIL = 'inquiry@homevision-fake-address.com';
-const INQUIRY_SUBJECT = 'Inquiry about a house';
+const DEFAULT_INQUIRY_EMAIL = 'inquiry@homevision-fake-address.com';
+const DEFAULT_INQUIRY_SUBJECT = 'Inquiry about a house';
+
+const inquiryEmail =
+  import.meta.env.VITE_INQUIRY_EMAIL ?? DEFAULT_INQUIRY_EMAIL;
+const inquirySubject =
+  import.meta.env.VITE_INQUIRY_SUBJECT ?? DEFAULT_INQUIRY_SUBJECT;
 
 function buildInquiryBody(house: House): string {
   return [
@@ -20,10 +25,10 @@ function buildInquiryBody(house: House): string {
 
 function inquiryMailtoHref(house: House): string {
   const params = new URLSearchParams({
-    subject: INQUIRY_SUBJECT,
+    subject: inquirySubject,
     body: buildInquiryBody(house),
   });
-  return `mailto:${INQUIRY_EMAIL}?${params.toString()}`;
+  return `mailto:${inquiryEmail}?${params.toString()}`;
 }
 
 function MailIcon({ className }: { className?: string }) {
