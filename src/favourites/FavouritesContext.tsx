@@ -12,6 +12,7 @@ import {
   parseFavouriteHouseIds,
   serializeFavouriteHouseIds,
 } from './favouriteHouseIdsStorage';
+import toast from 'react-hot-toast';
 
 type FavouritesContextValue = {
   isFavourite: (id: number) => boolean;
@@ -19,6 +20,10 @@ type FavouritesContextValue = {
 };
 
 const FavouritesContext = createContext<FavouritesContextValue | null>(null);
+
+type TogglePersistOutcome =
+  | { kind: 'success'; wasFavourite: boolean }
+  | { kind: 'error' };
 
 export function FavouritesProvider({ children }: { children: ReactNode }) {
   const [ids, setIds] = useState<Set<number>>(() => {
@@ -42,17 +47,49 @@ export function FavouritesProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
+  // We mutate `outcome` from inside the `setIds` updater, which is not textbook-pure.
+  // `toast.*` must run after the updater (not inside it) because it drives external UI state.
+  // We still need a functional updater so rapid toggles see the latest `prev`; this pattern
+  // captures persist success/failure synchronously, then shows one toast immediately after.
   const toggleFavourite = useCallback((id: number) => {
+    const outcome: { current: TogglePersistOutcome | null } = {
+      current: null,
+    };
+
     setIds((prev) => {
+      const wasFavourite = prev.has(id);
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
-      localStorage.setItem(
-        FAVOURITE_HOUSE_IDS_STORAGE_KEY,
-        serializeFavouriteHouseIds(next),
-      );
-      return next;
+
+      try {
+        localStorage.setItem(
+          FAVOURITE_HOUSE_IDS_STORAGE_KEY,
+          serializeFavouriteHouseIds(next),
+        );
+        outcome.current = { kind: 'success', wasFavourite };
+        return next;
+      } catch {
+        outcome.current = { kind: 'error' };
+        return prev;
+      }
     });
+
+    const toastId = `favourites-toggle-${id}`;
+    const o = outcome.current;
+    if (o?.kind === 'error') {
+      toast.error(
+        "Couldn't save favourites. Storage may be full or unavailable.",
+        { id: toastId },
+      );
+    } else if (o?.kind === 'success') {
+      toast.success(
+        o.wasFavourite
+          ? 'House removed from favourites'
+          : 'House added to favourites',
+        { id: toastId },
+      );
+    }
   }, []);
 
   const isFavourite = useCallback((id: number) => ids.has(id), [ids]);
