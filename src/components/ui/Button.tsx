@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 type Variant = 'primary' | 'secondary';
 
@@ -18,29 +18,35 @@ const variants: Record<Variant, string> = {
     'bg-white text-page-ink shadow-sm ring-1 ring-slate-200 hover:bg-slate-50 focus-visible:outline-slate-400',
 };
 
-export function Button({
-  variant = 'primary',
-  loading = false,
-  disabled,
-  className = '',
-  children,
-  ...rest
-}: ButtonProps) {
-  return (
-    <button
-      type="button"
-      className={`${base} ${variants[variant]} ${className}`.trim()}
-      disabled={disabled ?? loading}
-      aria-busy={loading}
-      {...rest}
-    >
-      {loading ? (
-        <span
-          className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent cursor-pointer"
-          aria-hidden
-        />
-      ) : null}
-      {children}
-    </button>
-  );
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    {
+      variant = 'primary',
+      loading = false,
+      disabled,
+      className = '',
+      children,
+      ...rest
+    },
+    ref,
+  ) {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={`${base} ${variants[variant]} ${className}`.trim()}
+        disabled={disabled ?? loading}
+        aria-busy={loading}
+        {...rest}
+      >
+        {loading ? (
+          <span
+            className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent cursor-pointer"
+            aria-hidden
+          />
+        ) : null}
+        {children}
+      </button>
+    );
+  },
+);

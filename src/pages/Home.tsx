@@ -1,12 +1,18 @@
-import { useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { HouseTable } from '../components/house/HouseTable';
 import { Container } from '../components/layout/Container';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { Button } from '../components/ui/Button';
+import { TutorialModal } from '../components/ui/TutorialModal';
 
 const HOUSE_LISTINGS_SECTION_ID = 'house-listings';
 
 export function Home() {
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const tutorialTriggerRef = useRef<HTMLButtonElement>(null);
+
+  const closeTutorial = useCallback(() => setTutorialOpen(false), []);
+
   const scrollToHouseListings = useCallback(() => {
     const el = document.getElementById(HOUSE_LISTINGS_SECTION_ID);
     if (!el) return;
@@ -58,16 +64,33 @@ export function Home() {
                 caught your eye—we’ll follow up and help you with the next
                 steps.
               </p>
-              <Button
-                type="button"
-                onClick={scrollToHouseListings}
-                aria-controls={HOUSE_LISTINGS_SECTION_ID}
-              >
-                Get Started
-              </Button>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  type="button"
+                  onClick={scrollToHouseListings}
+                  aria-controls={HOUSE_LISTINGS_SECTION_ID}
+                >
+                  Get Started
+                </Button>
+                <Button
+                  ref={tutorialTriggerRef}
+                  type="button"
+                  variant="secondary"
+                  aria-haspopup="dialog"
+                  aria-expanded={tutorialOpen}
+                  onClick={() => setTutorialOpen(true)}
+                >
+                  How it works
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+        <TutorialModal
+          open={tutorialOpen}
+          onClose={closeTutorial}
+          triggerRef={tutorialTriggerRef}
+        />
         <section
           id={HOUSE_LISTINGS_SECTION_ID}
           tabIndex={-1}
