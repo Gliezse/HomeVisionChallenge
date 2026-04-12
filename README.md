@@ -60,6 +60,14 @@ npm run format:check   # Prettier — check only (e.g. CI)
 
 On **git commit**, a **Husky** hook runs **lint-staged**: **ESLint (`--fix`)** and **Prettier (`--write`)** on staged `*.ts`, `*.tsx`, `*.js`, plus Prettier on staged `*.css` and `*.json`. Fix any remaining ESLint errors, re-stage if files changed, and commit again.
 
+### Testing
+
+```bash
+npm test
+```
+
+On **git push**, Husky runs **`npm test`** and **`npm run build`**; if either fails, the push is aborted.
+
 ## Local development (Docker)
 
 ### Requirements
