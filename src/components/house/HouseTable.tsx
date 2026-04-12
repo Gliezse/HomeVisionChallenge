@@ -186,7 +186,7 @@ export function HouseTable() {
             error?.message ?? 'The request failed after several retries.'
           }
         >
-          <Button type="button" variant="primary" onClick={() => refetch()}>
+          <Button type="button" variant="secondary" onClick={() => refetch()}>
             Retry
           </Button>
         </ErrorMessage>
@@ -251,7 +251,7 @@ export function HouseTable() {
                 >
                   <Button
                     type="button"
-                    variant="primary"
+                    variant="secondary"
                     onClick={() => fetchNextPage()}
                   >
                     Retry
