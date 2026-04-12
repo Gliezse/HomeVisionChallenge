@@ -16,7 +16,7 @@ import { HouseCard } from './HouseCard';
 const MD_QUERY = '(min-width: 768px)';
 const LG_QUERY = '(min-width: 1024px)';
 
-/** Guessed row height before ResizeObserver (square card + copy; varies by column count). */
+/** Initial virtual row height before measureElement runs. */
 const ROW_ESTIMATE_1_COL = 580;
 const ROW_ESTIMATE_2_COL = 520;
 const ROW_ESTIMATE_3_COL = 400;

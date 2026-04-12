@@ -3,7 +3,6 @@ import { Container } from './Container';
 
 const SCROLL_THRESHOLD_PX = 30;
 
-/** Company wordmark (source: HomeVision marketing CDN, vendored to `/public/logo.svg`). */
 const LOGO_SRC = '/logo.svg';
 
 const HOMEVISION_ABOUT_URL = 'https://homevision.co/company';
@@ -73,10 +72,7 @@ function HeaderContent({
   );
 }
 
-/**
- * Sticky header: large at page top, compact after scroll (smooth transition).
- * `data-site-header` is set on the real header for list virtualizer measurement.
- */
+/** Full-width header; shrinks after scroll. Real `<header>` sets `data-site-header` for layout math. */
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
 

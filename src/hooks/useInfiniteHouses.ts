@@ -6,7 +6,7 @@ import type { House } from '../types/house';
 /** Page size 12: e.g. 4 rows at 3 cols (lg), 6 rows at 2 cols (md), 12 rows at 1 col (mobile). */
 const DEFAULT_PER_PAGE = 12;
 
-/** Flaky API: bounded automatic retries; UI offers manual retry after exhaustion. */
+/** Automatic retries before the list surfaces an error / Retry. */
 const RETRY_ATTEMPTS = 3;
 
 export interface UseInfiniteHousesResult {
@@ -18,7 +18,7 @@ export interface UseInfiniteHousesResult {
   isError: boolean;
   isFetchNextPageError: boolean;
   refetch: () => void;
-  /** Consecutive failures for the active query (surface for debugging / UX). */
+  /** From React Query: how many times the current query has failed in a row. */
   failureCount: number;
   error: Error | null;
 }

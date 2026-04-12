@@ -106,8 +106,7 @@ export function FavouritesProvider({ children }: { children: ReactNode }) {
   );
 }
 
-/** Colocated with provider so context stays private to this module. */
-// eslint-disable-next-line react-refresh/only-export-components -- hook paired with Provider
+// eslint-disable-next-line react-refresh/only-export-components -- hook exported next to Provider
 export function useFavourites(): FavouritesContextValue {
   const ctx = useContext(FavouritesContext);
   if (!ctx) {

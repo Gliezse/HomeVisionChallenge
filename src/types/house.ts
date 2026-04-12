@@ -13,7 +13,7 @@ export interface HousesApiResponse {
 
 export interface HousesPageResult {
   houses: House[];
-  /** Whether another page may exist (derived when API omits explicit flag). */
+  /** True when this response had `perPage` items (next page may exist). */
   hasMore: boolean;
   page: number;
 }

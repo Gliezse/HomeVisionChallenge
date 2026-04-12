@@ -37,7 +37,7 @@ Errors use **`ErrorMessage`** (`src/components/ui/ErrorMessage.tsx`): `role="ale
 
 ## Favourites
 
-`toggleFavourite` (`src/favourites/FavouritesContext.tsx`) uses a **functional `setIds` updater** that builds the next `Set`, then **`try` / `catch`** around **`localStorage.setItem`**. On success it returns the new set; on failure it returns **`prev`**, so **in-memory favourites stay aligned with what was persisted** (no optimistic UI if storage throws). The updater also assigns a small **`outcome`** object (not textbook-pure) so we know success vs failure without calling **`toast.success` / `toast.error` inside the updater**—those run **immediately after** `setIds` returns (same synchronous turn, not `queueMicrotask`). Error copy explains storage may be full or unavailable; toasts use a stable **`id`** so rapid toggles replace the same toast.
+`toggleFavourite` (`src/favourites/FavouritesContext.tsx`) uses a **functional `setIds` updater** with **`try` / `catch`** around **`localStorage.setItem`**. On success it returns the new set; on failure it returns **`prev`**, so the UI matches what actually persisted. A ref (`outcome`) is filled inside that updater so we know success vs failure; **`toast.success` / `toast.error`** run right after **`setIds`** returns (still the same synchronous turn—never from inside the updater). Error copy mentions storage may be full or unavailable; toasts use a stable **`id`** so rapid toggles replace one toast.
 
 ---
 
