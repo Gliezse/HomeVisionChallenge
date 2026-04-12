@@ -33,10 +33,19 @@ export function Home() {
     <div className="min-h-screen">
       <SiteHeader />
       <main>
-        <div className="bg-[var(--bg-purple-light)] w-[100%]">
-          <div className="flex items-center justify-center py-30 px-4">
+        <div className="bg-white w-full relative">
+          <div className="pointer-events-none absolute top-0 left-0 w-full h-full">
+            <div className="h-full mx-auto max-w-5xl px-4">
+              <div className="grid grid-cols-4 h-full border-l border-r border-gray-200 w-full">
+                <div className="bg-transparent border-r border-gray-200"></div>
+                <div className="bg-transparent border-r border-gray-200"></div>
+                <div className="bg-transparent border-r border-gray-200"></div>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-center py-30 px-4 relative z-10">
             <div className="mx-auto max-w-2xl w-[100%] md:w-[50%] sm:w-[75%]">
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl mb-6">
+              <h1 className="text-4xl font-extrabold sm:text-5xl mb-6 tracking-[var(--tracking-tightest)]">
                 Find your dream home.
                 <br />
                 <span className="text-[var(--color-purple)]">
@@ -63,9 +72,12 @@ export function Home() {
           id={HOUSE_LISTINGS_SECTION_ID}
           tabIndex={-1}
           aria-label="House listings"
-          className="scroll-mt-24 outline-none focus:outline-none md:scroll-mt-28"
+          className="scroll-mt-24 outline-none focus:outline-none md:scroll-mt-28 bg-[var(--bg-purple-light)]"
         >
           <Container className="py-15">
+            <h2 className="text-3xl font-bold sm:text-4xl mb-6 tracking-[var(--tracking-tightest)] text-center mb-15">
+              Latest homes for sale.
+            </h2>
             <HouseTable />
           </Container>
         </section>

@@ -9,6 +9,7 @@
   --color-purple: #4f46e5;
   --bg-purple-dark: #eef2ff;
   --base--light-gray: #e4e4e7;
+  --tracking-tightest: -3px;
 }
 
 body {

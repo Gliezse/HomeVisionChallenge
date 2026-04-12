@@ -139,7 +139,7 @@ function HouseCardInner({ house, className = '' }: HouseCardProps) {
     <article
       aria-labelledby={listingSummaryId}
       onPointerLeave={blurPointerFocusOnLeave}
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-md transition-colors duration-300 ease-out hover:bg-[var(--bg-purple-light)] border border-[var(--base--light-gray)] ${className}`.trim()}
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-md transition-colors duration-300 ease-out ${className}`.trim()}
     >
       <span id={listingSummaryId} className="sr-only">
         {listingSummaryText}
