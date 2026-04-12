@@ -1,5 +1,9 @@
 # Technical Challenge — HomeVision
 
+## Live Demo
+
+https://home-vision-challenge.vercel.app/
+
 ## Task
 
 Build a small React + TypeScript app that loads **house listings** from HomeVision’s staging API and presents them in a **scrollable list**. The API is **flaky** (non-200 responses are expected); the UI should **retry** failed requests and still end up showing data reliably.
@@ -112,6 +116,7 @@ npm run dev
 
 **Ports** are not controlled by these variables: use **`npm run dev -- --port <n>`** for the dev server, or **`PORT=<n> make up`** for the Docker host mapping.
 
-## Future enhancements
+## Documentation
 
-See [FUTURE_ENHANCEMENTS.md](./docs/FUTURE_ENHANCEMENTS.md) for planned directions (favourites page, filtering/sorting, house details) and how today’s **API limits** affect them.
+- **[Error handling and user recovery](./docs/ERROR_HANDLING.md)** — Retries, error normalization, and UI recovery paths for the houses list (initial load vs. load more).
+- **[Future enhancements](./docs/FUTURE_ENHANCEMENTS.md)** — Planned directions (favourites page, filtering/sorting, house details) and how today’s **API limits** affect them.
