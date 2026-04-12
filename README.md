@@ -114,4 +114,4 @@ npm run dev
 
 ## Future enhancements
 
-See [FUTURE_ENHANCEMENTS.md](FUTURE_ENHANCEMENTS.md) for planned directions (favourites page, filtering/sorting, house details) and how today’s **API limits** affect them.
+See [FUTURE_ENHANCEMENTS.md](./docs/FUTURE_ENHANCEMENTS.md) for planned directions (favourites page, filtering/sorting, house details) and how today’s **API limits** affect them.
