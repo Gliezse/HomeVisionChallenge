@@ -1,7 +1,15 @@
-import { memo, useId, useMemo, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+  type PointerEvent,
+} from 'react';
 import { useFavourites } from '../../favourites/FavouritesContext';
 import type { House } from '../../types/house';
 import { formatPriceUSD } from '../../utils/format';
+import { Tooltip } from '../ui/Tooltip';
 
 const DEFAULT_INQUIRY_EMAIL = 'inquiry@homevision-fake-address.com';
 const DEFAULT_INQUIRY_SUBJECT = 'Inquiry about a house';
@@ -77,7 +85,7 @@ const ACTION_CHIP =
   'flex size-10 shrink-0 items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-slate-200/80';
 
 const ACTION_PEEK =
-  'transition-[opacity,color] duration-200 ease-out focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-purple)] md:pointer-events-none md:opacity-0 md:group-focus-within:pointer-events-auto md:group-focus-within:opacity-100 md:group-hover:pointer-events-auto md:group-hover:opacity-100';
+  'transition-[opacity,color] duration-200 ease-out focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-purple)] md:pointer-events-none md:opacity-0 md:group-has-[:focus-visible]:pointer-events-auto md:group-has-[:focus-visible]:opacity-100 md:group-hover:pointer-events-auto md:group-hover:opacity-100';
 
 const PLACEHOLDER_IMAGE =
   'data:image/svg+xml,' +
@@ -106,9 +114,31 @@ function HouseCardInner({ house, className = '' }: HouseCardProps) {
     [house.address, house.homeowner, house.price],
   );
 
+  // Mouse/tap puts focus on the heart or mail control, but most browsers do not mark that
+  // focus as :focus-visible. The focused control then stays the activeElement after the
+  // cursor leaves the card, which skews hover/focus styling and tooltips. On pointer leave
+  // we drop that focus; if the user actually moved focus here with the keyboard, the control
+  // matches :focus-visible and we leave focus alone.
+  const blurPointerFocusOnLeave = useCallback(
+    (e: PointerEvent<HTMLElement>) => {
+      if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+      const root = e.currentTarget;
+      const active = document.activeElement;
+      if (!(active instanceof HTMLElement) || !root.contains(active)) return;
+      try {
+        if (active.matches(':focus-visible')) return;
+      } catch {
+        /* :focus-visible in matches() unsupported */
+      }
+      active.blur();
+    },
+    [],
+  );
+
   return (
     <article
       aria-labelledby={listingSummaryId}
+      onPointerLeave={blurPointerFocusOnLeave}
       className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-md transition-colors duration-300 ease-out hover:bg-[var(--bg-purple-light)] border border-[var(--base--light-gray)] ${className}`.trim()}
     >
       <span id={listingSummaryId} className="sr-only">
@@ -123,39 +153,47 @@ function HouseCardInner({ house, className = '' }: HouseCardProps) {
       <span id={favActionId} className="sr-only">
         {isFav ? 'Remove from favourites.' : 'Add to favourites.'}
       </span>
-      <div className="relative w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 aspect-square">
-        <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
-          <button
-            type="button"
-            aria-pressed={isFav}
-            aria-labelledby={`${favActionId} ${listingSummaryId}`}
-            className={`${ACTION_CHIP} ${
-              isFav
-                ? 'text-[var(--color-purple)] opacity-100 cursor-pointer'
-                : `text-gray-500 hover:text-[var(--color-purple)] cursor-pointer ${ACTION_PEEK}`
-            }`}
-            onClick={() => toggleFavourite(house.id)}
-          >
-            <HeartIcon filled={isFav} />
-          </button>
-          <a
-            href={mailtoHref}
-            aria-labelledby={`${emailActionId} ${listingSummaryId}`}
-            aria-describedby={emailHelpId}
-            className={`${ACTION_CHIP} text-gray-500 transition-[opacity,color] duration-200 ease-out hover:text-[var(--color-purple)] focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-purple)] ${ACTION_PEEK}`}
-          >
-            <MailIcon className="size-5" />
-          </a>
+      <div className="relative aspect-square w-full shrink-0">
+        <div className="absolute inset-0 overflow-hidden rounded-xl bg-slate-100">
+          <img
+            src={src}
+            alt=""
+            loading="lazy"
+            width={400}
+            height={400}
+            className="h-full w-full object-cover"
+            onError={() => setSrc(PLACEHOLDER_IMAGE)}
+          />
         </div>
-        <img
-          src={src}
-          alt=""
-          loading="lazy"
-          width={400}
-          height={400}
-          className="h-full w-full object-cover"
-          onError={() => setSrc(PLACEHOLDER_IMAGE)}
-        />
+        <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+          <Tooltip
+            label={isFav ? 'Remove from favourites' : 'Add to favourites'}
+          >
+            <button
+              type="button"
+              aria-pressed={isFav}
+              aria-labelledby={`${favActionId} ${listingSummaryId}`}
+              className={`${ACTION_CHIP} ${
+                isFav
+                  ? 'text-[var(--color-purple)] opacity-100 cursor-pointer'
+                  : `text-gray-500 hover:text-[var(--color-purple)] cursor-pointer ${ACTION_PEEK}`
+              }`}
+              onClick={() => toggleFavourite(house.id)}
+            >
+              <HeartIcon filled={isFav} />
+            </button>
+          </Tooltip>
+          <Tooltip label="Email about this listing">
+            <a
+              href={mailtoHref}
+              aria-labelledby={`${emailActionId} ${listingSummaryId}`}
+              aria-describedby={emailHelpId}
+              className={`${ACTION_CHIP} text-gray-500 transition-[opacity,color] duration-200 ease-out hover:text-[var(--color-purple)] focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-purple)] ${ACTION_PEEK}`}
+            >
+              <MailIcon className="size-5" />
+            </a>
+          </Tooltip>
+        </div>
       </div>
       <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 pt-4">
         <h2 className="line-clamp-2 text-base font-semibold leading-snug sm:text-lg">
