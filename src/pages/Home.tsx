@@ -41,7 +41,7 @@ export function Home() {
       <main>
         <div className="bg-white w-full relative">
           <div className="pointer-events-none absolute top-0 left-0 w-full h-full">
-            <div className="h-full mx-auto max-w-5xl px-4">
+            <div className="h-full mx-auto max-w-7xl px-4">
               <div className="grid grid-cols-4 h-full border-l border-r border-gray-200 w-full">
                 <div className="bg-transparent border-r border-gray-200"></div>
                 <div className="bg-transparent border-r border-gray-200"></div>
@@ -51,7 +51,7 @@ export function Home() {
           </div>
           <div className="flex items-center justify-center py-30 px-4 relative z-10">
             <div className="mx-auto max-w-2xl w-[100%] md:w-[50%] sm:w-[75%]">
-              <h1 className="text-4xl font-extrabold sm:text-5xl mb-6 tracking-[var(--tracking-tightest)]">
+              <h1 className="text-4xl font-extrabold lg:text-6xl sm:text-5xl mb-6 tracking-[var(--tracking-tightest)]">
                 Find your dream home.
                 <br />
                 <span className="text-[var(--color-purple)]">

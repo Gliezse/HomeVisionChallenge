@@ -139,7 +139,7 @@ function HouseCardInner({ house, className = '' }: HouseCardProps) {
     <article
       aria-labelledby={listingSummaryId}
       onPointerLeave={blurPointerFocusOnLeave}
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-md transition-colors duration-300 ease-out ${className}`.trim()}
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white border border-slate-300 transition-colors duration-300 ease-out ${className}`.trim()}
     >
       <span id={listingSummaryId} className="sr-only">
         {listingSummaryText}
@@ -154,7 +154,7 @@ function HouseCardInner({ house, className = '' }: HouseCardProps) {
         {isFav ? 'Remove from favourites.' : 'Add to favourites.'}
       </span>
       <div className="relative aspect-square w-full shrink-0">
-        <div className="absolute inset-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="absolute inset-0 overflow-hidden rounded-tl-xl rounded-tr-xl bg-slate-100">
           <img
             src={src}
             alt=""
@@ -195,14 +195,14 @@ function HouseCardInner({ house, className = '' }: HouseCardProps) {
           </Tooltip>
         </div>
       </div>
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 pt-4">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 p-4 ">
         <h2 className="line-clamp-2 text-base font-semibold leading-snug sm:text-lg">
           {house.address}
         </h2>
         <p className="line-clamp-1 text-sm text-gray-600 sm:text-base">
           {house.homeowner}
         </p>
-        <p className="text-xl font-bold tabular-nums sm:text-2xl">
+        <p className="text-xl tracking-tighter font-semibold normal-nums sm:text-2xl">
           {formatPriceUSD(house.price)}
         </p>
       </div>
