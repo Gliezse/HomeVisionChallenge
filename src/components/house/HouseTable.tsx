@@ -57,12 +57,30 @@ const GRID_ROW_CLASS =
 
 function SkeletonCard() {
   return (
-    <div className="flex h-full min-h-0 animate-pulse flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-md ring-1 ring-slate-100">
-      <div className="aspect-square w-full shrink-0 rounded-xl bg-[var(--base--light-gray)]" />
-      <div className="mt-4 flex min-h-0 flex-1 flex-col gap-2">
-        <div className="h-5 w-4/5 rounded bg-[var(--base--light-gray)] sm:h-6" />
-        <div className="h-4 w-3/5 rounded bg-[var(--base--light-gray)] sm:h-5" />
-        <div className="h-7 w-1/2 rounded bg-[var(--base--light-gray)] sm:h-8" />
+    <div
+      className="flex h-full min-h-0 animate-pulse flex-col overflow-hidden rounded-2xl border border-slate-300 bg-white"
+      aria-hidden
+    >
+      <div className="relative aspect-square w-full shrink-0">
+        <div className="absolute inset-0 overflow-hidden rounded-tl-xl rounded-tr-xl bg-slate-100">
+          <div className="h-full w-full bg-slate-200/70" />
+        </div>
+        <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-slate-200/80">
+            <div className="size-5 rounded-full bg-slate-200" />
+          </div>
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-slate-200/80">
+            <div className="size-4 rounded bg-slate-200" />
+          </div>
+        </div>
+      </div>
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 p-4">
+        <div className="space-y-1.5">
+          <div className="h-[1.125rem] w-[92%] rounded bg-slate-200 sm:h-5" />
+          <div className="h-[1.125rem] w-[72%] rounded bg-slate-200 sm:h-5" />
+        </div>
+        <div className="h-4 w-[55%] rounded bg-slate-200 sm:h-5" />
+        <div className="h-7 w-[45%] rounded bg-slate-200 sm:h-8" />
       </div>
     </div>
   );
@@ -71,7 +89,7 @@ function SkeletonCard() {
 function TableSkeleton({ cards = 12 }: { cards?: number }) {
   return (
     <div
-      className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7 lg:grid-cols-3 lg:gap-8"
+      className={GRID_ROW_CLASS}
       aria-busy="true"
       aria-label="Loading houses"
     >
@@ -237,9 +255,7 @@ export function HouseTable() {
           )}
 
           {isFetchingNextPage && !isFetchNextPageError ? (
-            <div className="mt-2">
-              <TableSkeleton cards={6} />
-            </div>
+            <TableSkeleton cards={6} />
           ) : null}
 
           <div className="flex min-h-[120px] flex-col items-center justify-center gap-3 border-t border-slate-200/80 bg-slate-50/50 px-4 py-4">
