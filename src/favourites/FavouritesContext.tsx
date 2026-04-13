@@ -25,15 +25,38 @@ type TogglePersistOutcome =
   | { kind: 'success'; wasFavourite: boolean }
   | { kind: 'error' };
 
-export function FavouritesProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<Set<number>>(() => {
-    if (typeof window === 'undefined') return new Set();
-    return parseFavouriteHouseIds(
+type PendingToggle = {
+  id: number;
+  wasFavourite: boolean;
+  prevIds: Set<number>;
+  nextIds: Set<number>;
+};
+
+type FavouritesState = {
+  /** In-memory source of truth used by consumers. */
+  ids: Set<number>;
+  /** FIFO queue of optimistic toggles waiting to persist. */
+  pending: PendingToggle[];
+};
+
+function createInitialState(): FavouritesState {
+  if (typeof window === 'undefined') {
+    return { ids: new Set(), pending: [] };
+  }
+  return {
+    ids: parseFavouriteHouseIds(
       localStorage.getItem(FAVOURITE_HOUSE_IDS_STORAGE_KEY),
-    );
-  });
+    ),
+    pending: [],
+  };
+}
+
+export function FavouritesProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<FavouritesState>(createInitialState);
+  const { ids, pending } = state;
 
   useEffect(() => {
+    /** Keep this tab in sync when another tab updates favourites. */
     const onStorage = (e: StorageEvent) => {
       if (
         e.key !== FAVOURITE_HOUSE_IDS_STORAGE_KEY ||
@@ -41,56 +64,75 @@ export function FavouritesProvider({ children }: { children: ReactNode }) {
       ) {
         return;
       }
-      setIds(parseFavouriteHouseIds(e.newValue));
+      setState({
+        ids: parseFavouriteHouseIds(e.newValue),
+        pending: [],
+      });
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
-  // We mutate `outcome` from inside the `setIds` updater, which is not textbook-pure.
-  // `toast.*` must run after the updater (not inside it) because it drives external UI state.
-  // We still need a functional updater so rapid toggles see the latest `prev`; this pattern
-  // captures persist success/failure synchronously, then shows one toast immediately after.
   const toggleFavourite = useCallback((id: number) => {
-    const outcome: { current: TogglePersistOutcome | null } = {
-      current: null,
-    };
-
-    setIds((prev) => {
-      const wasFavourite = prev.has(id);
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-
-      try {
-        localStorage.setItem(
-          FAVOURITE_HOUSE_IDS_STORAGE_KEY,
-          serializeFavouriteHouseIds(next),
-        );
-        outcome.current = { kind: 'success', wasFavourite };
-        return next;
-      } catch {
-        outcome.current = { kind: 'error' };
-        return prev;
-      }
+    /** Pure optimistic update: compute next ids + enqueue persist task. */
+    setState((prevState) => {
+      const prevIds = prevState.ids;
+      const wasFavourite = prevIds.has(id);
+      const nextIds = new Set(prevIds);
+      if (wasFavourite) nextIds.delete(id);
+      else nextIds.add(id);
+      return {
+        ids: nextIds,
+        pending: [...prevState.pending, { id, wasFavourite, prevIds, nextIds }],
+      };
     });
+  }, []);
 
-    const toastId = `favourites-toggle-${id}`;
-    const o = outcome.current;
-    if (o?.kind === 'error') {
+  useEffect(() => {
+    /** Persist one queued toggle at a time, then dequeue. */
+    const first = pending[0];
+    if (!first) return;
+
+    const toastId = `favourites-toggle-${first.id}`;
+    let outcome: TogglePersistOutcome;
+    try {
+      localStorage.setItem(
+        FAVOURITE_HOUSE_IDS_STORAGE_KEY,
+        serializeFavouriteHouseIds(first.nextIds),
+      );
+      outcome = { kind: 'success', wasFavourite: first.wasFavourite };
+      setState((prevState) => ({
+        ids: prevState.ids,
+        pending: prevState.pending.slice(1),
+      }));
+    } catch {
+      outcome = { kind: 'error' };
+      /** Roll back optimistic state if persistence fails. */
+      setState((prevState) => {
+        const currentFirst = prevState.pending[0];
+        if (!currentFirst) return prevState;
+        return {
+          ids: currentFirst.prevIds,
+          pending: [],
+        };
+      });
+    }
+
+    if (outcome.kind === 'error') {
       toast.error(
         "Couldn't save favourites. Storage may be full or unavailable.",
         { id: toastId },
       );
-    } else if (o?.kind === 'success') {
-      toast.success(
-        o.wasFavourite
-          ? 'House removed from favourites'
-          : 'House added to favourites',
-        { id: toastId },
-      );
+      return;
     }
-  }, []);
+
+    toast.success(
+      outcome.wasFavourite
+        ? 'House removed from favourites'
+        : 'House added to favourites',
+      { id: toastId },
+    );
+  }, [pending]);
 
   const isFavourite = useCallback((id: number) => ids.has(id), [ids]);
 

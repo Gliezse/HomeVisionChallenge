@@ -37,7 +37,7 @@ Errors use **`ErrorMessage`** (`src/components/ui/ErrorMessage.tsx`): `role="ale
 
 ## Favourites
 
-`toggleFavourite` (`src/favourites/FavouritesContext.tsx`) uses a **functional `setIds` updater** with **`try` / `catch`** around **`localStorage.setItem`**. On success it returns the new set; on failure it returns **`prev`**, so the UI matches what actually persisted. A ref (`outcome`) is filled inside that updater so we know success vs failure; **`toast.success` / `toast.error`** run right after **`setIds`** returns (still the same synchronous turn—never from inside the updater). Error copy mentions storage may be full or unavailable; toasts use a stable **`id`** so rapid toggles replace one toast.
+`src/favourites/FavouritesContext.tsx`: if **`localStorage.setItem`** throws, in-memory favourites **roll back** so the UI matches storage; **`toast.error`** says storage may be full or unavailable. Success uses **`toast.success`**; each toast uses a stable **`id`** per house so rapid toggles don’t stack duplicate toasts.
 
 ---
 
