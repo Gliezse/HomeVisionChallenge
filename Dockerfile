@@ -8,7 +8,15 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+
+ARG VITE_API_BASE
+ARG VITE_INQUIRY_EMAIL
+ARG VITE_INQUIRY_SUBJECT
+RUN \
+  if [ -n "${VITE_API_BASE}" ]; then export VITE_API_BASE="${VITE_API_BASE}"; fi && \
+  if [ -n "${VITE_INQUIRY_EMAIL}" ]; then export VITE_INQUIRY_EMAIL="${VITE_INQUIRY_EMAIL}"; fi && \
+  if [ -n "${VITE_INQUIRY_SUBJECT}" ]; then export VITE_INQUIRY_SUBJECT="${VITE_INQUIRY_SUBJECT}"; fi && \
+  npm run build
 
 FROM nginx:1.27-alpine AS runner
 

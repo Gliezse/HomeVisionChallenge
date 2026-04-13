@@ -6,6 +6,8 @@ up:
 down:
 	docker compose down
 
+restart: down up
+
 dev:
 	npm install
 	npm run dev

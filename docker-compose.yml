@@ -1,6 +1,11 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_API_BASE: ${VITE_API_BASE:-}
+        VITE_INQUIRY_EMAIL: ${VITE_INQUIRY_EMAIL:-}
+        VITE_INQUIRY_SUBJECT: ${VITE_INQUIRY_SUBJECT:-}
     image: homevision-interview:local
     ports:
       - "${PORT:-8080}:80"

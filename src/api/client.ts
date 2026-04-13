@@ -3,7 +3,7 @@ import axios, { type AxiosError } from 'axios';
 const DEFAULT_TIMEOUT_MS = 8_000;
 
 export const HOUSES_API_URL =
-  import.meta.env.VITE_API_BASE ??
+  import.meta.env.VITE_API_BASE ||
   'https://staging.homevision.co/api_project/houses';
 
 export class AppApiError extends Error {

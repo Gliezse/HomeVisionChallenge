@@ -97,7 +97,13 @@ Without Make: `docker compose up -d --build` and `docker compose down` (same `PO
 
 ## Environment variables
 
-Vite only exposes variables prefixed with **`VITE_`** to the client. Set them in a **`.env`** file (see [Vite env files](https://vitejs.dev/guide/env-and-mode.html)) or inline for a one-off command.
+Vite only exposes variables prefixed with **`VITE_`** to the client. Start from **`.env.example`**, then copy and edit:
+
+```bash
+cp .env.example .env
+```
+
+See [Vite env files](https://vitejs.dev/guide/env-and-mode.html) for modes (`.env.development`, etc.). You can also set variables inline for a one-off command (below).
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -115,6 +121,28 @@ npm run dev
 ```
 
 **Ports** are not controlled by these variables: use **`npm run dev -- --port <n>`** for the dev server, or **`PORT=<n> make up`** for the Docker host mapping.
+
+### Using env vars with Docker
+
+The Docker image serves a **static** build. Vite inlines `VITE_*` when **`npm run build`** runs inside the image, so those values are decided **when the image is built**, not when the container starts. Adding `environment:` under the Compose service does **not** change the bundled app.
+
+Use a **`.env`** at the **repo root** (next to **`docker-compose.yml`**), same as for **`npm run dev`**. Create it from **`.env.example`** if you have not already (`cp .env.example .env`).
+
+[Docker Compose loads that file](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/) on your machine and passes `VITE_API_BASE`, `VITE_INQUIRY_EMAIL`, and `VITE_INQUIRY_SUBJECT` into the image build as build args. That is separate from **`.dockerignore`**, which only means `.env` is not `COPY`’d into the build context—the Compose process still reads it from disk.
+
+For a **one-off override** without editing `.env`, set variables in the shell when you run Compose (they take precedence over entries in `.env` for interpolation):
+
+```bash
+VITE_INQUIRY_EMAIL=hello@example.com make up
+```
+
+After you add or change `VITE_*` in `.env`, rebuild the image:
+
+```bash
+make restart
+```
+
+(`make up` runs `docker compose up -d --build`.) Leave a variable out of `.env` (or unset it) to keep the built-in default from the table above; the Dockerfile only forwards non-empty values so empty entries do not override those defaults.
 
 ## Documentation
 

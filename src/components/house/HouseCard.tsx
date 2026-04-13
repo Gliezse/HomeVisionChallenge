@@ -15,9 +15,9 @@ const DEFAULT_INQUIRY_EMAIL = 'inquiry@homevision-fake-address.com';
 const DEFAULT_INQUIRY_SUBJECT = 'Inquiry about a house';
 
 const inquiryEmail =
-  import.meta.env.VITE_INQUIRY_EMAIL ?? DEFAULT_INQUIRY_EMAIL;
+  import.meta.env.VITE_INQUIRY_EMAIL || DEFAULT_INQUIRY_EMAIL;
 const inquirySubject =
-  import.meta.env.VITE_INQUIRY_SUBJECT ?? DEFAULT_INQUIRY_SUBJECT;
+  import.meta.env.VITE_INQUIRY_SUBJECT || DEFAULT_INQUIRY_SUBJECT;
 
 function buildInquiryBody(house: House): string {
   return [
