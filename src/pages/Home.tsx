@@ -3,6 +3,7 @@ import { HouseTable } from '../components/house/HouseTable';
 import { Container } from '../components/layout/Container';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { Button } from '../components/ui/Button';
+import { ScrollToTopButton } from '../components/ui/ScrollToTopButton';
 import { TutorialModal } from '../components/ui/TutorialModal';
 
 const HOUSE_LISTINGS_SECTION_ID = 'house-listings';
@@ -105,6 +106,7 @@ export function Home() {
           </Container>
         </section>
       </main>
+      <ScrollToTopButton listingsSectionId={HOUSE_LISTINGS_SECTION_ID} />
     </div>
   );
 }
