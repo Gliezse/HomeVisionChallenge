@@ -40,16 +40,8 @@ function getItemsPerRowSnapshot(): number {
   return 1;
 }
 
-function getItemsPerRowServerSnapshot() {
-  return 1;
-}
-
 function useItemsPerRow() {
-  return useSyncExternalStore(
-    subscribeLayoutColumns,
-    getItemsPerRowSnapshot,
-    getItemsPerRowServerSnapshot,
-  );
+  return useSyncExternalStore(subscribeLayoutColumns, getItemsPerRowSnapshot);
 }
 
 const GRID_ROW_CLASS =
