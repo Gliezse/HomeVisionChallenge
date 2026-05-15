@@ -36,7 +36,7 @@ function inquiryMailtoHref(house: House): string {
     subject: inquirySubject,
     body: buildInquiryBody(house),
   });
-  const query = params.toString().replaceAll('+', '%2B');
+  const query = params.toString().replaceAll('+', '%20');
   return `mailto:${inquiryEmail}?${query}`;
 }
 
