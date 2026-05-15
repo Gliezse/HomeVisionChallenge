@@ -36,7 +36,8 @@ function inquiryMailtoHref(house: House): string {
     subject: inquirySubject,
     body: buildInquiryBody(house),
   });
-  return `mailto:${inquiryEmail}?${params.toString()}`;
+  const query = params.toString().replaceAll('+', '%2B');
+  return `mailto:${inquiryEmail}?${query}`;
 }
 
 function MailIcon({ className }: { className?: string }) {
